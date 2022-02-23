@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="heading">data list</div>
+    <table>
+        <thead>
+
+            <tr>
+                <th>id</th>
+                <th>stuid</th>
+                <th>Enhlish</th>
+                <th>Hindi</th>
+                <th>Maths</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="list">
+
+        </tbody>
+    </table>
+    <br><br>
+    <div class="main">
+
+        <div class="form">
+            <form onsubmit="event.preventDefault();onSubmit()">
+                <div>
+                    <label for="number">id</label>
+                    <input type="number" name="id" id="id">
+                </div>
+                <div>
+                    <label for="number">stuid</label>
+                    <input type="number" name="stuid" id="stuid">
+                </div>
+                <div>
+                    <label for="">Enhlish</label>
+                    <input type="number" name="Enhlish" id="english">
+                </div>
+                <div>
+                    <label for="">Hindi</label>
+                    <input type="number" name="Hindi" id="hindi">
+                </div>
+                <div>
+                    <label for="">Maths</label>
+                    <input type="number" name="Maths" id="maths">
+                </div>
+                <div class="form-action-button">
+                    <input type="submit" value="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+<script src="data.js"></script>
+<script>
+    datalist(marks)
+    function datalist(marks) {
+        var renderdata = "";
+        if (marks.length == 0) {
+            return document.getElementById("list").innerHTML = "<h1>Data not found</h1>";
+        }
+        else {
+
+            for (i = 0; i < marks.length; i++) {
+                renderdata += "<tr>" +
+                    "<td>" + marks[i].id + "</td>" +
+                    "<td>" + marks[i].stuId + "</td>" +
+                    "<td>" + marks[i].english + "</td>" +
+                    "<td>" + marks[i].hindi + "</td>" +
+                    "<td>" + marks[i].maths + "</td>" +
+                    "<td><button onclick='viewData(" + marks[i].id + ")'>View </button>" +
+                    " <button onclick='deleteData(" + marks[i].id + ")'>Delete</button></td>" +
+                    "</tr>"
+                document.getElementById("list").innerHTML = renderdata;
+            }
+        }
+        // alert("hello")
+    }
+
+    function viewData(id) {
+        // var store = "";
+        // console.log("id", id);
+        for (let i = 0; i < marks.length; i++) {
+
+            // if (marks.filter(x => x.id == id)) { //usng filter//
+            if (marks[i].id === id) {
+                document.getElementById("id").value =marks[i].id;
+                document.getElementById("stuid").value =marks[i].stuId;
+                document.getElementById("english").value =marks[i].english;
+                document.getElementById("hindi").value =marks[i].hindi;
+                document.getElementById("maths").value =marks[i].maths;
+                // store += "<div>id:" + marks[i].id + "</div>" +
+                //     "<div>stuId:" + marks[i].stuId + "</div>" +
+                //     "<div>english:" + marks[i].english + "</div>" +
+                //     "<div>hindi:" + marks[i].hindi + "</div>" +
+                //     "<div>maths:" + marks[i].maths + "</div>"
+                // document.getElementById("heading").innerHTML = store;
+
+               // for check value in console//
+                // console.log(marks[i])
+                // alert("true")
+            }
+
+
+        }
+        // alert(marks[id-1])
+        // console.log(marks[id - 1]);
+    }
+
+    function deleteData(id) {
+        for (let i = 0; i < marks.length; i++) {
+            if (marks[i].id === id) {
+                marks.splice(i, 1);
+            }
+        }
+        console.log(marks);
+        datalist(marks)
+    }
+
+    function readFormData(){
+        var formData = {};
+        formData["id"] =Number(document.getElementById("id").value);
+        formData["stuId"] =Number(document.getElementById("stuid").value);
+        formData["english"] =Number(document.getElementById("english").value);
+        formData["hindi"] =Number(document.getElementById("hindi").value);
+        formData["maths"] =Number(document.getElementById("maths").value);
+        return formData;
+        // console.log(formData);
+    }
+function postData(formData,marks){
+    marks.push(formData);
+    datalist(marks)
+    // console.log("formdata",formData);
+    // console.log("marks data",marks);
+}
+function onSubmit(){
+    if(valid()){
+
+        let store = readFormData()
+        for(let i=0; i<marks.length; i++){
+            if(marks[i].id ===store.id)
+            return updatedRecord(marks.indexOf(marks[i]),store,marks)
+        }
+        postData(store ,marks)
+
+
+    }
+}
+
+function updatedRecord(indexPosition,store,marks){
+    console.log("indexposition of data",indexPosition);
+    console.log("store data",store);
+    console.log("marks",marks);
+    marks[indexPosition].id =store.id;
+    // console.log("index",marks)
+    marks[indexPosition].stuId= store.stuId;
+    marks[indexPosition].english =store.english;
+    marks[indexPosition].hindi =store.hindi;
+    marks[indexPosition].maths =store.maths;
+datalist(marks); 
+}
+
+function valid(){
+    let isvalid =true;
+    if(document.getElementById("id").value === ""){
+        isvalid = false;
+    }
+    else{
+        isvalid = true;
+    }
+    return isvalid;
+}
+</script>
+
+</html>
